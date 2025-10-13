@@ -82,7 +82,7 @@ workflows:
   # ----------------------------
   macos-build:
     name: Build macOS Desktop (Release) - Zip & (optional) notarize
-    instance_type: mac_mini_m2  # Updated from mac_mini_m1 to mac_mini_m2 [[1]]
+    instance_type: mac_mini_m2  # Updated from mac_mini_m1 to mac_mini_m2
     environment:
       flutter: stable
       xcode: latest
@@ -103,10 +103,13 @@ workflows:
         script: |
           flutter clean
           
-      - name: Install Cocoapods properly for M2
+      - name: Install Cocoapods properly for M2 (ARM-native)
         script: |
-          sudo arch -x86_64 gem install ffi
-          arch -x86_64 pod install --project-directory=macos
+          # Install ffi gem for native ARM architecture
+          sudo gem install ffi
+          
+          # Run pod install in native ARM mode
+          pod install --project-directory=macos
 
       - name: Enable macOS desktop support
         script: |
@@ -130,9 +133,8 @@ workflows:
           arch  # Shows current architecture
           system_profiler SPHardwareDataType  # Shows hardware details
 
-      - name: Build macOS (release, native arm64)
+      - name: Build macOS (release)
         script: |
-          # M2 Macs natively run arm64 - no need for arch -arm64 prefix
           flutter build macos --release
 
       - name: Compress .app to zip (artifact-friendly)
