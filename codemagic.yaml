@@ -100,6 +100,13 @@ workflows:
       - name: Clean workspace
         script: |
           flutter clean
+      - name: Enable macOS desktop support
+        script: |
+          flutter config --enable-macos-desktop
+          if [ ! -d macos ]; then
+            echo "macos/ folder missing; creating platform support"
+            flutter create .
+          fi
       - name: Get dependencies
         script: |
           flutter pub get
