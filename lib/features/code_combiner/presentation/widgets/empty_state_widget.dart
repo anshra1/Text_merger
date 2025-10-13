@@ -22,39 +22,7 @@ class EmptyStateWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DottedBorder(
-            borderType: BorderType.RRect,
-            radius: const Radius.circular(12),
-            padding: const EdgeInsets.all(6),
-            dashPattern: const [8, 4],
-            color: theme.colorScheme.onSurface.withOpacity(0.4),
-            child: Container(
-              width: 200,
-              height: 150,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.onSurface.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    icon ?? Icons.add,
-                    size: 48,
-                    color: theme.colorScheme.onSurface.withOpacity(0.4),
-                  ),
-                  const Gap(16),
-                  Text(
-                    'Drag and drop a folder here',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+       
           const Gap(24),
           Text(
             title,

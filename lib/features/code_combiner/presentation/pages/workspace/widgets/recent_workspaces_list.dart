@@ -33,10 +33,13 @@ class _RecentWorkspacesListState extends State<RecentWorkspacesList> {
   @override
   Widget build(BuildContext context) {
     if (widget.workspaces.isEmpty) {
-      return const EmptyStateWidget(
-        icon: Icons.history,
-        title: 'No recent workspaces',
-        subtitle: 'Open a folder to get started',
+      return const Align(
+        alignment: Alignment.topLeft,
+        child: EmptyStateWidget(
+          icon: Icons.history,
+          title: 'No recent workspaces',
+          subtitle: 'Open a folder to get started',
+        ),
       );
     }
 

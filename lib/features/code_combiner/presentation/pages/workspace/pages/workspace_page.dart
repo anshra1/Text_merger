@@ -83,11 +83,9 @@ class _WorkspaceSelectorPageState extends State<WorkspaceSelectorPage> {
                         child: ElevatedButton.icon(
                           onPressed: () async {
                             final path = await _pickDirectoryWithSystemDialog();
-                            if (path != null) {
-                              if (!context.mounted) return;
-                              await context.pushNamed(
-                                RoutesName.fileExplorer,
-                                extra: path,
+                            if (path != null && context.mounted) {
+                              await context.read<WorkspaceCubit>().openDirectoryTree(
+                                path,
                               );
                             }
                           },
