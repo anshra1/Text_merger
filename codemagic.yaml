@@ -108,16 +108,14 @@ workflows:
         script: |
           flutter test --coverage || true
 
-      - name: Build macOS (release, dynamic arch)
+      - name: Debug build environment
         script: |
-          echo "Shell arch before build: $(uname -m)"
-          if [ "$(uname -m)" = "arm64" ]; then
-            echo "Detected arm64 host; building darwin-arm64"
-            flutter build macos --release --target-platform=darwin-arm64
-          else
-            echo "Detected x86_64 (Rosetta) host; building darwin-x64"
-            arch -x86_64 /bin/bash -lc 'uname -m && flutter build macos --release --target-platform=darwin-x64'
-          fi
+          xcodebuild -showdestinations
+          uname -a
+          flutter doctor -v
+      - name: Build macOS (release, native arm64)
+        script: |
+          flutter build macos --release --target-platform=darwin-arm64
 
       - name: Compress .app to zip (artifact-friendly)
         script: |
