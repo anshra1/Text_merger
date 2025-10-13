@@ -1,0 +1,4 @@
+enum NodeType {
+  file,
+  folder
+}
