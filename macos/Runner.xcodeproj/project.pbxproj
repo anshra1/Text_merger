@@ -388,7 +388,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.textMerger.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Text Merger.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Text Merger";		};
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Text Merger.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Text Merger";
+			};
+		};
 		331C80DC294CF71000263BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -400,6 +402,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Text Merger.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Text Merger";
+			};
 		};
 		331C80DD294CF71000263BE5 /* Profile */ = {
 			isa = XCBuildConfiguration;
