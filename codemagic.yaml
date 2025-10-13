@@ -37,6 +37,8 @@ workflows:
         script: |
           flutter --version
           flutter doctor -v
+          echo "Host arch: $(uname -m)"
+          /usr/bin/arch
 
       - name: Enable Windows desktop
         script: |
@@ -108,7 +110,8 @@ workflows:
 
       - name: Build macOS (release, native arm64)
         script: |
-          flutter build macos --release --target-platform=darwin-arm64
+          echo "Shell arch before build: $(uname -m)"
+          /usr/bin/arch -arm64 /bin/bash -lc 'uname -m && flutter build macos --release --target-platform=darwin-arm64'
 
       - name: Compress .app to zip (artifact-friendly)
         script: |
