@@ -82,7 +82,7 @@ workflows:
   # ----------------------------
   macos-build:
     name: Build macOS Desktop (Release) - Zip & (optional) notarize
-    instance_type: mac_mini_m2  # Updated from mac_mini_m1 to mac_mini_m2
+    instance_type: mac_mini_m2  # As seen in your settings
     environment:
       flutter: stable
       xcode: latest
@@ -128,14 +128,33 @@ workflows:
 
       - name: Debug build environment
         script: |
-          xcodebuild -showdestinations
+          echo "Available Xcode destinations:"
+          xcodebuild -showdestinations -project macos/Runner.xcodeproj
+          echo "System architecture:"
           uname -a
-          arch  # Shows current architecture
-          system_profiler SPHardwareDataType  # Shows hardware details
+          arch
+          echo "Hardware details:"
+          system_profiler SPHardwareDataType | grep "Chip\|Processor"
 
-      - name: Build macOS (release)
+      # NEW: Attempt to modify Xcode project to ensure x86_64 compatibility
+      - name: Configure Xcode project for x86_64 (Rosetta)
         script: |
-          flutter build macos --release
+          # Set the base SDK to macOS and explicitly allow x86_64
+          cd macos
+          /usr/libexec/PlistBuddy -c "Set :architectures:0 x86_64" Runner.xcodeproj/project.pbxproj 2>/dev/null || echo "Key may not exist, continuing..."
+          /usr/libexec/PlistBuddy -c "Set :architectures:0 x86_64" Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme 2>/dev/null || echo "Scheme file may not exist, continuing..."
+          
+          # Use xcodebuild to set build settings directly
+          xcodebuild -project Runner.xcodeproj -target Runner -configuration Release -arch x86_64
+          cd ..
+
+      - name: Build macOS (release, force x86_64 via environment)
+        script: |
+          # Explicitly set environment variables to force x86_64 build
+          export ARCHS="x86_64"
+          export VALID_ARCHS="x86_64"
+          export FLUTTER_TARGET_PLATFORM="darwin-x64"
+          flutter build macos --release --target-platform=darwin-x64
 
       - name: Compress .app to zip (artifact-friendly)
         script: |
