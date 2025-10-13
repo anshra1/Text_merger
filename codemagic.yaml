@@ -119,10 +119,17 @@ workflows:
         script: |
           xcodebuild -showdestinations
           uname -a
+          echo "Detected Flutter build flags:" && flutter build macos -h | sed -n '1,80p' || true
           flutter doctor -v
       - name: Build macOS (release, native arm64)
         script: |
-          flutter build macos --release --target-platform=darwin-arm64
+          # Force native arm64 execution to avoid Rosetta
+          # Prefer modern flag if Flutter supports it; fallback remains valid
+          if flutter build macos -h | grep -q "--darwin-archs"; then
+            arch -arm64 flutter build macos --release --darwin-archs=arm64
+          else
+            arch -arm64 flutter build macos --release --target-platform=darwin-arm64
+          fi
 
       - name: Compress .app to zip (artifact-friendly)
         script: |
