@@ -1,0 +1,188 @@
+# codemagic.yaml - Multi-platform Flutter desktop CI (Windows / macOS / Linux)
+#
+# Replace placeholders (e.g. $MAC_CERT, $WINDOWS_CERT, $GITHUB_RELEASE_TOKEN) with
+# encrypted environment variables configured in Codemagic (Project Settings -> Environment variables).
+#
+# Notes:
+# - Commit this file to the repo root as `codemagic.yaml`.
+# - For macOS notarization & code signing and Windows code signing/MSIX you must add secrets
+#   and adjust the signing commands below.
+
+workflows:
+  # ----------------------------
+  # Shared definitions (scripts) - DRY
+  # ----------------------------
+  default-defs:
+    environment:
+      flutter: stable
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+
+  # ----------------------------
+  # Windows build workflow
+  # ----------------------------
+  windows-build:
+    name: Build Windows Desktop (Release)
+    instance_type: windows_x2
+    environment:
+      <<: *default-defs
+      vars:
+        BUILD_MODE: release
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+    scripts:
+      - name: Flutter version & doctor
+        script: |
+          flutter --version
+          flutter doctor -v
+
+      - name: Enable Windows desktop
+        script: |
+          flutter config --enable-windows-desktop
+
+      - name: Get dependencies
+        script: |
+          flutter pub get
+
+      - name: Run tests
+        script: |
+          flutter test --coverage || true   # don't fail pipeline on uncovered tests; change to strict if desired
+
+      - name: Build Windows (release)
+        script: |
+          flutter build windows --release
+
+      - name: (Optional) Package MSIX (placeholder)
+        script: |
+          # To create an MSIX you can use msix package tools or codemagic options.
+          # This step requires Windows signing certificates; replace the commands below with your packaging/signing flow.
+          echo "MSIX packaging/signing step - provide your own script here"
+
+    artifacts:
+      # collect possible executables / MSIX / installers
+      - build/windows/runner/**/*.exe
+      - build/windows/runner/**/Release/**/*.exe
+      - build/windows/runner/*.exe
+      - build/windows/**/appx/**/*
+    publishing:
+      # Example: you can publish to GitHub Releases using a token; configure encrypted $GITHUB_RELEASE_TOKEN
+      # - github_release:
+      #     auth_token: $GITHUB_RELEASE_TOKEN
+      #     repository_owner: your-org-or-user
+      #     repository_name: your-repo
+      #     tag: $CM_COMMIT
+      #     name: "Windows build $CM_BUILD_NUMBER"
+
+  # ----------------------------
+  # macOS build workflow
+  # ----------------------------
+  macos-build:
+    name: Build macOS Desktop (Release) - Zip & (optional) notarize
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      xcode: latest
+      vars:
+        BUILD_MODE: release
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+    scripts:
+      - name: Flutter version & doctor
+        script: |
+          flutter --version
+          flutter doctor -v
+
+      - name: Enable macOS desktop
+        script: |
+          flutter config --enable-macos-desktop
+
+      - name: Get dependencies
+        script: |
+          flutter pub get
+
+      - name: Run tests
+        script: |
+          flutter test --coverage || true
+
+      - name: Build macOS (release)
+        script: |
+          flutter build macos --release
+
+      - name: Compress .app to zip (artifact-friendly)
+        script: |
+          set -e
+          APP_DIR=$(ls build/macos/Build/Products/Release | grep '\.app$' || true)
+          if [ -z "$APP_DIR" ]; then
+            echo "No .app found in build output - listing build directory:"
+            ls -la build/macos/Build/Products/Release || true
+            exit 1
+          fi
+          APP_NAME="$APP_DIR"
+          ZIP_NAME="${APP_NAME%.app}-macos.zip"
+          cd build/macos/Build/Products/Release
+          zip -r "../../${ZIP_NAME}" "$APP_NAME"
+          mv "../../${ZIP_NAME}" ../../../../  || true
+          cd -
+
+      - name: (Optional) Code sign & notarize (placeholder)
+        script: |
+          # Replace with your signing/notarization flow. Example placeholders:
+          # security import /tmp/certs/mac_cert.p12 -P "$MAC_CERT_PASSWORD" -k ~/Library/Keychains/login.keychain
+          # xcrun altool --notary-api-key ...  (notarization requires Apple credentials)
+          echo "macOS signing/notarization - provide your own commands and secrets"
+
+    artifacts:
+      - build/macos/Build/Products/Release/*.zip
+      - build/macos/Build/Products/Release/*.app
+
+  # ----------------------------
+  # Linux build workflow
+  # ----------------------------
+  linux-build:
+    name: Build Linux Desktop (Release)
+    instance_type: linux_x2
+    environment:
+      flutter: stable
+      vars:
+        BUILD_MODE: release
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+    scripts:
+      - name: Flutter version & doctor
+        script: |
+          flutter --version
+          flutter doctor -v
+
+      - name: Enable Linux desktop
+        script: |
+          flutter config --enable-linux-desktop
+
+      - name: Get dependencies
+        script: |
+          flutter pub get
+
+      - name: Run tests
+        script: |
+          flutter test --coverage || true
+
+      - name: Build Linux (release)
+        script: |
+          flutter build linux --release
+
+      - name: (Optional) Create Snap / AppImage
+        script: |
+          # Snap package creation is only available on Linux instances.
+          # Example placeholder for snapcraft:
+          # snapcraft --use-lxd
+          # Or you can create an AppImage using linuxdeploy and appimagetool.
+          echo "Snap/AppImage packaging - provide your own packaging script if needed"
+
+    artifacts:
+      - build/linux/x64/release/bundle/*
+      - build/linux/**/release/bundle/*
+
+# End of codemagic.yaml

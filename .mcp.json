@@ -1,0 +1,9 @@
+{
+  "notion": {
+    "command": "npx",
+    "args": ["-y", "@notionhq/notion-mcp-server"],
+    "env": {
+      "NOTION_API_KEY": "your_notion_api_key_here"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+analyzer:
+  plugins:
+    - custom_lint
+  errors:
+    invalid_annotation_target: ignore
+    eol_at_end_of_file: ignore
+    lines_longer_than_80_chars: ignore
+    flutter_style_todos: ignore
+    unused_element: ignore
+
+include: package:very_good_analysis/analysis_options.yaml
+linter:
+  rules:
+    public_member_api_docs: false

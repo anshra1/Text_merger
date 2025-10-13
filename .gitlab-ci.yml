@@ -1,0 +1,50 @@
+stages:
+  - test
+  - build
+
+.flutter_base:
+  before_script:
+    - flutter --version
+    - flutter pub get
+
+.flutter_test:
+  extends: .flutter_base
+  stage: test
+  script:
+    - flutter test
+
+.flutter_build:
+  extends: .flutter_base
+  stage: build
+
+# Linux
+linux_build:
+  extends: .flutter_build
+  image: cirrusci/flutter:stable
+  script:
+    - flutter build linux
+  artifacts:
+    paths:
+      - build/linux/x64/release/bundle/
+
+# Windows
+windows_build:
+  extends: .flutter_build
+  tags:
+    - windows
+  script:
+    - flutter build windows
+  artifacts:
+    paths:
+      - build/windows/runner/Release/
+
+# macOS
+macos_build:
+  extends: .flutter_build
+  tags:
+    - macos
+  script:
+    - flutter build macos
+  artifacts:
+    paths:
+      - build/macos/Build/Products/Release/

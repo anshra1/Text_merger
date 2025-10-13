@@ -1,0 +1,3 @@
+[submodule "toastification"]
+	path = toastification
+	url = https://github.com/anshra1/toastification.git
