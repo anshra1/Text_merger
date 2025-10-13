@@ -110,7 +110,7 @@ workflows:
 
       - name: Build macOS (release)
         script: |
-          flutter build macos --release
+          flutter build macos --release --target-platform=darwin-x64
 
       - name: Compress .app to zip (artifact-friendly)
         script: |
