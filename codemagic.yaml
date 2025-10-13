@@ -95,11 +95,9 @@ workflows:
           flutter --version
           flutter doctor -v
 
-      - name: Clean and recreate macOS project
+      - name: Clean workspace
         script: |
           flutter clean
-          rm -rf macos
-          flutter create .
       - name: Get dependencies
         script: |
           flutter pub get
@@ -108,9 +106,9 @@ workflows:
         script: |
           flutter test --coverage || true
 
-      - name: Build macOS (release)
+      - name: Build macOS (release, native arm64)
         script: |
-          flutter build macos --release --target-platform=darwin-x64
+          flutter build macos --release --target-platform=darwin-arm64
 
       - name: Compress .app to zip (artifact-friendly)
         script: |
