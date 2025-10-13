@@ -95,10 +95,11 @@ workflows:
           flutter --version
           flutter doctor -v
 
-      - name: Enable macOS desktop
+      - name: Clean and recreate macOS project
         script: |
-          flutter config --enable-macos-desktop
-
+          flutter clean
+          rm -rf macos
+          flutter create .
       - name: Get dependencies
         script: |
           flutter pub get
