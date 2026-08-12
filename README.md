@@ -1,15 +1,45 @@
 # Text Merger
 
-## Getting Started
+Text Merger is a powerful utility designed to easily combine multiple text or code files into a single document. This is especially useful for compiling codebases or documentation to provide as context for AI models.
 
-This project is a starting point for a Flutter application.
+## 🚀 Download & Install
 
-A few resources to get you started if this is your first Flutter project:
+You can download the latest version of Text Merger for your operating system below:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **[🪟 Download for Windows (.exe)](https://firebasestorage.googleapis.com/v0/b/doctor-ca9ae.firebasestorage.app/o/app%2FTextMerger_Installer.exe?alt=media&token=c9d231dd-ce96-40bd-83e5-70aa36e1a492)**
+- **[🐧 Download for Linux (.AppImage)](https://firebasestorage.googleapis.com/v0/b/doctor-ca9ae.firebasestorage.app/o/app%2Ftext-merger.AppImage?alt=media&token=ab27db15-19ff-4866-bdae-dde24de2fc1f)**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# Text Merger
+## 🛠️ Built With
+
+- [Flutter](https://flutter.dev/) - The framework used for cross-platform development.
+- [Dart](https://dart.dev/) - The programming language used.
+- [Material Design System](https://github.com/anshra1/material_design_system) - Custom UI components.
+
+## 💻 Getting Started (For Developers)
+
+To run the project locally or contribute to the development:
+
+### Prerequisites
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (`>=1.17.0`)
+- [Dart SDK](https://dart.dev/get-dart) (`>=3.8.1 <4.0.0`)
+
+### Installation
+
+1. Clone the repository and navigate to the project directory:
+   ```bash
+   git clone <repository-url>
+   cd Text_merger
+   ```
+
+2. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+
+3. Run the application:
+   ```bash
+   flutter run
+   ```
+
+## 📝 License
+This project is for personal or internal use. (Update with appropriate license if required).
