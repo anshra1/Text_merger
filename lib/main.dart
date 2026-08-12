@@ -14,7 +14,6 @@ Future<void> main() async {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    
 
     await init();
 
