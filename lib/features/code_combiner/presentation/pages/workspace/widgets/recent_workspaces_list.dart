@@ -100,7 +100,7 @@ class _RecentWorkspacesListState extends State<RecentWorkspacesList> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                   ),
                 ),
                 child: ListTile(
@@ -123,7 +123,7 @@ class _RecentWorkspacesListState extends State<RecentWorkspacesList> {
                         style: TextStyle(
                           color: Theme.of(
                             context,
-                          ).textTheme.bodySmall?.color?.withOpacity(0.7),
+                          ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

@@ -24,7 +24,12 @@ class WorkspaceInitial extends WorkspaceState {
 }
 
 class WorkspaceLoading extends WorkspaceStateWithWorkspaces {
-  const WorkspaceLoading(super.workspaces);
+  const WorkspaceLoading(super.workspaces, {this.scannedCount = 0});
+
+  final int scannedCount;
+
+  @override
+  List<Object> get props => [workspaces, scannedCount];
 }
 
 class WorkspaceError extends WorkspaceState {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:text_merger/core/pages/main_layout.dart';
 import 'package:text_merger/core/pages/page_not_found.dart';
 import 'package:text_merger/core/routes/route_name.dart';
 import 'package:text_merger/features/code_combiner/presentation/pages/file_explorer/pages/file_explorer_page.dart';
@@ -17,6 +18,10 @@ class AppRouter {
 
   // Expose the root navigator key for global services
   static GlobalKey<NavigatorState> get rootNavigatorKey => _rootNavigatorKey;
+
+  static final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(
+    debugLabel: 'shell',
+  );
 
   static final GoRouter router = GoRouter(
     errorPageBuilder: (context, state) => MaterialPage(
@@ -37,26 +42,35 @@ class AppRouter {
         },
       ),
 
-      GoRoute(
-        path: RoutesName.workspaceSelector,
-        name: RoutesName.workspaceSelector,
-        pageBuilder: (_, state) {
-          return _buildTransition(
-            child: const WorkspaceSelectorPage(),
-            state: state,
-          );
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) {
+          return MainLayout(child: child);
         },
+        routes: [
+          GoRoute(
+            path: RoutesName.workspaceSelector,
+            name: RoutesName.workspaceSelector,
+            pageBuilder: (_, state) {
+              return _buildTransition(
+                child: const WorkspaceSelectorPage(),
+                state: state,
+              );
+            },
+          ),
+          GoRoute(
+            path: RoutesName.fileExplorer,
+            name: RoutesName.fileExplorer,
+            pageBuilder: (_, state) {
+              return _buildTransition(
+                child: FileExplorerPage(workspaceData: state.extra!),
+                state: state,
+              );
+            },
+          ),
+        ],
       ),
-      GoRoute(
-        path: RoutesName.fileExplorer,
-        name: RoutesName.fileExplorer,
-        pageBuilder: (_, state) {
-          return _buildTransition(
-            child: FileExplorerPage(workspaceData: state.extra!),
-            state: state,
-          );
-        },
-      ),
+
       GoRoute(
         path: RoutesName.settings,
         name: RoutesName.settings,

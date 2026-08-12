@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_system/material_design_system.dart';
 import 'package:text_merger/core/di/di.dart';
 import 'package:text_merger/core/routes/routes.dart';
+import 'package:text_merger/core/theme/cubit/sidebar_cubit.dart';
 import 'package:text_merger/core/theme/cubit/theme_cubit.dart';
 import 'package:text_merger/core/theme/cubit/theme_state.dart';
 import 'package:text_merger/features/code_combiner/presentation/cubits/file_explorer_cubit.dart';
@@ -21,6 +22,9 @@ class RootApp extends StatelessWidget {
         ),
         BlocProvider<SettingsCubit>(
           create: (context) => sl<SettingsCubit>(),
+        ),
+        BlocProvider<SidebarCubit>(
+          create: (context) => SidebarCubit(),
         ),
         // TODO: Add other providers here as needed
         BlocProvider<WorkspaceCubit>(

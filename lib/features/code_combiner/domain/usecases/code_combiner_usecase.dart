@@ -15,8 +15,8 @@ class CodeCombinerUseCase {
   // ==================== Workspace Operations ====================
 
   /// Business workflow: Open directory tree with full setup
-  ResultFuture<WorkspaceData> openDirectoryTree(String directoryPath) {
-    return repository.openDirectoryTree(directoryPath);
+  ResultFuture<WorkspaceData> openDirectoryTree(String directoryPath, {void Function(int)? onProgress, bool Function()? isCancelled}) {
+    return repository.openDirectoryTree(directoryPath, onProgress: onProgress, isCancelled: isCancelled);
   }
 
   /// Business workflow: Get recent workspaces

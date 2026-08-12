@@ -19,10 +19,10 @@ class CodeCombinerRepositoryImpl implements CodeCombinerRepository {
   final LocalStorageDataSource localStorageDataSource;
 
   @override
-  ResultFuture<WorkspaceData> openDirectoryTree(String directoryPath) async {
+  ResultFuture<WorkspaceData> openDirectoryTree(String directoryPath, {void Function(int)? onProgress, bool Function()? isCancelled}) async {
     try {
       // Coordinate multiple operations in single transaction
-      final fileTree = await fileSystemDataSource.scanDirectory(directoryPath);
+      final fileTree = await fileSystemDataSource.scanDirectory(directoryPath, onProgress: onProgress, isCancelled: isCancelled);
       final appSettings = await localStorageDataSource.loadAppSettings();
       final filterSettings = await localStorageDataSource.loadFilterSettings();
       await localStorageDataSource.addRecentWorkspace(directoryPath);

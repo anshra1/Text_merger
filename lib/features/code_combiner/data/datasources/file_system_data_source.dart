@@ -12,7 +12,7 @@ import 'package:text_merger/features/code_combiner/data/models/file_node.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class FileSystemDataSource {
-  Future<Map<String, FileNode>> scanDirectory(String directoryPath);
+  Future<Map<String, FileNode>> scanDirectory(String directoryPath, {void Function(int)? onProgress, bool Function()? isCancelled});
 
   Future<String> readFileContent(String filePath);
   Future<ExportPreview> combineAndExportFiles(
@@ -26,7 +26,7 @@ class FileSystemDataSourceImpl implements FileSystemDataSource {
 
   /// Purpose: Scan directory structure and build file tree nodes map
   @override
-  Future<Map<String, FileNode>> scanDirectory(String directoryPath) async {
+  Future<Map<String, FileNode>> scanDirectory(String directoryPath, {void Function(int)? onProgress, bool Function()? isCancelled}) async {
     try {
       // Input validation
       if (directoryPath.isEmpty) {
@@ -91,7 +91,11 @@ class FileSystemDataSourceImpl implements FileSystemDataSource {
       nodes[rootId] = rootNodeWithId;
 
       // Recursively scan the directory
-      await _scanDirectoryRecursive(directory, rootId, nodes);
+      var scannedCount = 0;
+      await _scanDirectoryRecursive(directory, rootId, nodes, () {
+        scannedCount++;
+        onProgress?.call(scannedCount);
+      }, isCancelled);
 
       return nodes;
     } on FileSystemException {
@@ -279,6 +283,8 @@ class FileSystemDataSourceImpl implements FileSystemDataSource {
     Directory directory,
     String parentId,
     Map<String, FileNode> nodes,
+    void Function() onNodeAdded,
+    bool Function()? isCancelled,
   ) async {
     try {
       final entities = await directory.list(followLinks: false).toList();
@@ -286,6 +292,15 @@ class FileSystemDataSourceImpl implements FileSystemDataSource {
       final childIds = <String>[];
 
       for (final entity in entities) {
+        if (isCancelled != null && isCancelled()) {
+          throw const FileSystemException(
+            methodName: '_scanDirectoryRecursive',
+            originalError: 'Operation cancelled',
+            userMessage: 'Scanning was cancelled',
+            title: 'Cancelled',
+          );
+        }
+
         try {
           // Skip if not accessible
           if (!await isAccessible(entity.path)) {
@@ -298,7 +313,10 @@ class FileSystemDataSourceImpl implements FileSystemDataSource {
 
           // If it's a directory, recursively scan it
           if (entity is Directory) {
-            await _scanDirectoryRecursive(entity, childNode.id, nodes);
+            onNodeAdded();
+            await _scanDirectoryRecursive(entity, childNode.id, nodes, onNodeAdded, isCancelled);
+          } else {
+            onNodeAdded();
           }
         } on FileSystemException {
           // Log the error but continue scanning other files

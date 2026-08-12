@@ -39,7 +39,7 @@ class RecentWorkspaceCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: colorScheme.outline.withOpacity(0.3),
+          color: colorScheme.outline.withValues(alpha: 0.3),
         ),
       ),
       child: Container(
@@ -49,7 +49,7 @@ class RecentWorkspaceCard extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: [
               colorScheme.surface,
-              colorScheme.surface.withOpacity(0.8),
+              colorScheme.surface.withValues(alpha: 0.8),
             ],
           ),
           borderRadius: BorderRadius.circular(16),
@@ -67,7 +67,7 @@ class RecentWorkspaceCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: colorScheme.primaryContainer.withOpacity(0.3),
+                        color: colorScheme.primaryContainer.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -96,7 +96,7 @@ class RecentWorkspaceCard extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurface.withOpacity(0.7),
+                              color: colorScheme.onSurface.withValues(alpha: 0.7),
                             ),
                           ),
                         ],
@@ -139,7 +139,7 @@ class RecentWorkspaceCard extends StatelessWidget {
                       ],
                       child: Icon(
                         Icons.more_vert,
-                        color: colorScheme.onSurface.withOpacity(0.6),
+                        color: colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -148,7 +148,7 @@ class RecentWorkspaceCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
-                    color: colorScheme.secondaryContainer.withOpacity(0.3),
+                    color: colorScheme.secondaryContainer.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(

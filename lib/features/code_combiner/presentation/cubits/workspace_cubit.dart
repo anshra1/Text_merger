@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:text_merger/features/code_combiner/data/models/recent_workspace.dart';
 import 'package:text_merger/features/code_combiner/domain/usecases/code_combiner_usecase.dart';
@@ -12,6 +14,8 @@ class WorkspaceCubit extends Cubit<WorkspaceState> {
 
   final CodeCombinerUseCase codeCombinerUseCase;
 
+  bool _isCancelled = false;
+
   /// Load recent workspaces from storage
   Future<void> loadRecentWorkspaces() async {
     final currentWorkspaces = state is WorkspaceStateWithWorkspaces
@@ -23,7 +27,22 @@ class WorkspaceCubit extends Cubit<WorkspaceState> {
 
     result.fold(
       (failure) => emit(WorkspaceError(failure)),
-      (workspaces) => emit(WorkspaceLoaded(workspaces)),
+      (workspaces) async {
+        var removedCount = 0;
+        final validWorkspaces = <RecentWorkspace>[];
+        for (final workspace in workspaces) {
+          if (Directory(workspace.path).existsSync()) {
+            validWorkspaces.add(workspace);
+          } else {
+            removedCount++;
+            await codeCombinerUseCase.removeRecentWorkspace(workspace.path);
+          }
+        }
+        if (removedCount > 0) {
+          emit(SuccessState('Removed $removedCount recent workspace(s) because they no longer exist.'));
+        }
+        emit(WorkspaceLoaded(validWorkspaces));
+      },
     );
   }
 
@@ -38,7 +57,23 @@ class WorkspaceCubit extends Cubit<WorkspaceState> {
         : <RecentWorkspace>[];
     emit(WorkspaceLoading(currentWorkspaces));
 
-    final result = await codeCombinerUseCase.openDirectoryTree(directoryPath);
+    _isCancelled = false;
+    final stopwatch = Stopwatch()..start();
+    final result = await codeCombinerUseCase.openDirectoryTree(
+      directoryPath,
+      onProgress: (count) {
+        if (stopwatch.elapsedMilliseconds > 100) {
+          emit(WorkspaceLoading(currentWorkspaces, scannedCount: count));
+          stopwatch.reset();
+        }
+      },
+      isCancelled: () => _isCancelled,
+    );
+
+    if (_isCancelled) {
+      emit(WorkspaceLoaded(currentWorkspaces));
+      return;
+    }
 
     result.fold(
       (failure) => emit(WorkspaceError(failure)),
@@ -54,6 +89,13 @@ class WorkspaceCubit extends Cubit<WorkspaceState> {
         // 3. Display workspace information
       },
     );
+  }
+
+  /// Cancel the current loading operation
+  void cancelLoading() {
+    if (state is WorkspaceLoading) {
+      _isCancelled = true;
+    }
   }
 
   /// Add workspace to recent list (legacy method)

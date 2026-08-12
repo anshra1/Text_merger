@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PageNotFoundScreen extends StatelessWidget {
-  const PageNotFoundScreen({super.key, required this.onPressed});
+  const PageNotFoundScreen({required this.onPressed, super.key});
 
   final VoidCallback onPressed;
 

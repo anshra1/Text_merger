@@ -8,11 +8,6 @@ Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
 
-    FlutterError.onError = (FlutterErrorDetails details) {
-      // In a real app, log this to a crash reporting service (e.g., Sentry)
-      debugPrint('Flutter error: ${details.exceptionAsString()}');
-    };
-
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,

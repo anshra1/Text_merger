@@ -63,7 +63,7 @@ class FileExplorerCubit extends Cubit<FileExplorerState> {
           );
 
       await result.fold(
-        (failure) async => emit(FileExplorerError(failure.message ?? 'Unknown error')),
+        (failure) async => emit(FileExplorerError(failure.message)),
         (workspaceData) async {
           // Store complete tree locally (one-time scan per session)
           _allNodes = workspaceData.fileTree;
@@ -89,7 +89,7 @@ class FileExplorerCubit extends Cubit<FileExplorerState> {
       // Handle timeout specifically
       final fileCount = _countFilesInDirectory(workspacePath);
       emit(FileExplorerTimeout(fileCount, workspacePath));
-    } catch (e) {
+    }on Exception catch (e) {
       emit(FileExplorerError('An unexpected error occurred: $e'));
     }
   }
@@ -105,7 +105,7 @@ class FileExplorerCubit extends Cubit<FileExplorerState> {
         if (entity is File) count++;
       });
       return count;
-    } catch (e) {
+    }on Exception catch (_) {
       return 0;
     }
   }
@@ -364,7 +364,7 @@ class FileExplorerCubit extends Cubit<FileExplorerState> {
 
       result.fold(
         (failure) {
-          emit(FileExplorerError(failure.message ?? 'Unknown error'));
+          emit(FileExplorerError(failure.message));
         },
         (newFilterSettings) {
           // Count selections before cleanup
@@ -544,7 +544,7 @@ class FileExplorerCubit extends Cubit<FileExplorerState> {
     final result = await useCase.exportFiles(selectedPaths, customSavePath: savePath);
     return result.fold(
       (failure) {
-        emit(FileExplorerError(failure.message ?? 'Unknown error'));
+        emit(FileExplorerError(failure.message ));
         return null;
       },
       (exportPreview) {

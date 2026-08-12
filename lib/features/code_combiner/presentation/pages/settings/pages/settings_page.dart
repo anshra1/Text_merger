@@ -5,7 +5,9 @@ import 'package:material_design_system/material_design_system.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:text_merger/core/di/di.dart';
 import 'package:text_merger/core/theme/cubit/theme_cubit.dart';
-import 'package:text_merger/core/theme/cubit/theme_state.dart' as CoreThemeState;
+//
+// ignore: library_prefixes
+import 'package:text_merger/core/theme/cubit/theme_state.dart' as coreThemeState;
 import 'package:text_merger/features/code_combiner/presentation/cubits/file_explorer_cubit.dart';
 import 'package:text_merger/features/code_combiner/presentation/cubits/file_explorer_state.dart';
 import 'package:text_merger/features/code_combiner/presentation/pages/settings/cubit/settings_cubit.dart';
@@ -46,7 +48,7 @@ class _SettingsView extends StatelessWidget {
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) {
           final settings = settingsState.settings;
-          return BlocBuilder<ThemeCubit, CoreThemeState.ThemeState>(
+          return BlocBuilder<ThemeCubit, coreThemeState.ThemeState>(
             builder: (context, themeState) {
               return ListView(
                 padding: EdgeInsets.all(md.space.medium(context)),
@@ -332,7 +334,7 @@ class _SettingsTextFieldRowState extends State<_SettingsTextFieldRow> {
             hintStyle: md.typ
                 .getBodyMedium(context)
                 .copyWith(
-                  color: md.sys.onSurfaceVariant.withOpacity(0.6),
+                  color: md.sys.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
             contentPadding: EdgeInsets.symmetric(
               horizontal: md.space.medium(context),

@@ -11,7 +11,7 @@ abstract class CodeCombinerRepository {
   // ==================== Workspace Management ====================
 
   /// Open directory tree: scan directory + update recent workspaces + load settings
-  ResultFuture<WorkspaceData> openDirectoryTree(String directoryPath);
+  ResultFuture<WorkspaceData> openDirectoryTree(String directoryPath, {void Function(int)? onProgress, bool Function()? isCancelled});
 
   /// Get recent workspaces with validation
   ResultFuture<List<RecentWorkspace>> getRecentWorkspaces();

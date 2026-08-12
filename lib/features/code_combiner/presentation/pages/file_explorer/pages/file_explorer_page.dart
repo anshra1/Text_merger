@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_system/material_design_system.dart';
-import 'package:text_merger/core/routes/route_name.dart';
+import 'package:text_merger/core/theme/cubit/sidebar_cubit.dart';
 import 'package:text_merger/features/code_combiner/data/enum/node_type.dart';
 import 'package:text_merger/features/code_combiner/data/models/file_node.dart';
 import 'package:text_merger/features/code_combiner/domain/repositories/code_combiner_repository.dart';
@@ -28,8 +28,19 @@ class _FileExplorerPageState extends State<FileExplorerPage> {
   @override
   void initState() {
     super.initState();
+    _initWorkspace(widget.workspaceData);
+  }
+
+  @override
+  void didUpdateWidget(covariant FileExplorerPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.workspaceData != widget.workspaceData) {
+      _initWorkspace(widget.workspaceData);
+    }
+  }
+
+  void _initWorkspace(Object data) {
     final cubit = context.read<FileExplorerCubit>();
-    final data = widget.workspaceData;
     if (data is WorkspaceData) {
       cubit.initializeFromWorkspaceData(data);
     } else if (data is String) {
@@ -97,49 +108,55 @@ class _FileExplorerPageState extends State<FileExplorerPage> {
             children: [
               // Custom header with same background as AppBar
               ColoredBox(
-                color:
-                    Theme.of(context).appBarTheme.backgroundColor ??
-                    Theme.of(context).colorScheme.surface,
-                child: SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: spacing.medium(context),
-                      vertical: spacing.small(context),
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () => context.pop(),
+                color: Theme.of(context).colorScheme.surface,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  child: Row(
+                    children: [
+                      BlocBuilder<SidebarCubit, bool>(
+                        builder: (context, isOpen) {
+                          return IconButton(
+                            icon: Icon(isOpen ? Icons.menu_open : Icons.menu),
+                            onPressed: () => context.read<SidebarCubit>().toggle(),
+                            tooltip: isOpen ? 'Close Sidebar' : 'Open Sidebar',
+                          );
+                        }
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.folder_open_outlined,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'File Explorer',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            'Text Merger',
-                            style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        const Spacer(),
-                        Text(
-                          'No. of Files: ${nodes.values.where((n) => n.type == NodeType.file).length}',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        child: Text(
+                          '${nodes.values.where((n) => n.type == NodeType.file).length} files selected',
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          icon: const Icon(Icons.settings_outlined, size: 26),
-                          onPressed: () => context.pushNamed(RoutesName.settings),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+              const Divider(height: 1),
               // Main content
               Expanded(
                 child: Padding(
@@ -292,7 +309,7 @@ class _FileExplorerPageState extends State<FileExplorerPage> {
               decoration: BoxDecoration(
                 color: Theme.of(
                   context,
-                ).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -330,7 +347,7 @@ class _FileExplorerPageState extends State<FileExplorerPage> {
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(
                         context,
-                      ).colorScheme.onSurfaceVariant.withOpacity(0.7),
+                      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -412,7 +429,7 @@ class _FileExplorerPageState extends State<FileExplorerPage> {
               Text(
                 description,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurface.withOpacity(0.7),
+                  color: colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
               ),
             ],

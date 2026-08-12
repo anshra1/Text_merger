@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_merger/core/services/firebase_service.dart';
 import 'package:text_merger/core/theme/cubit/theme_cubit.dart';
 import 'package:text_merger/features/code_combiner/data/datasources/file_system_data_source.dart';
 import 'package:text_merger/features/code_combiner/data/datasources/local_storage_data_source.dart';
@@ -21,6 +22,10 @@ Future<void> _core() async {
   // SharedPreferences as async singleton
   sl.registerSingletonAsync<SharedPreferences>(SharedPreferences.getInstance);
   await sl.isReady<SharedPreferences>();
+
+  // Firebase Service
+  sl.registerLazySingleton<FirebaseService>(FirebaseService.new);
+  await sl<FirebaseService>().init();
 
   // Register and init cubits that depend on SharedPreferences
   sl

@@ -1,19 +1,24 @@
 name: text_merger
 description: "Text Merger - Combine text files for AI context"
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.8.1 <4.0.0'
+  sdk: ">=3.8.1 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
   bloc: ^9.0.0
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
+  dotted_border: ^2.1.0
   equatable: ^2.0.7
   file_picker: ^8.0.3
+  firebase_analytics: ^12.4.6
+  firebase_core: ^4.13.0
+  firebase_crashlytics: ^5.2.7
+  firebase_performance: ^0.11.4+6
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.0
@@ -29,8 +34,8 @@ dependencies:
   json_annotation: ^4.8.1
   logger: ^2.6.0
   material_design_system:
-    git: 
-     url: https://github.com/anshra1/material_design_system.git
+    git:
+      url: https://github.com/anshra1/material_design_system.git
   mocktail: ^1.0.4
   path: ^1.8.0
   path_provider: ^2.1.4
@@ -38,9 +43,7 @@ dependencies:
   super_drag_and_drop: ^0.9.1
   toastification:
     git:
-     url: https://github.com/anshra1/toastification.git
-  dotted_border: ^2.1.0
-      
+      url: https://github.com/anshra1/toastification.git
   uuid: ^4.5.1
 
 dev_dependencies:
@@ -54,11 +57,16 @@ dev_dependencies:
   test: ^1.25.15
   very_good_analysis: ^9.0.0
 
+dependency_overrides:
+  matcher: 0.12.19
+  material_color_utilities: ^0.13.0
+ 
+  test_api: 0.7.11
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
