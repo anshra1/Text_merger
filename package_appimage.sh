@@ -55,6 +55,7 @@ cat <<EOF > "$APPDIR/AppRun"
 #!/bin/sh
 HERE="\$(dirname "\$(readlink -f "\${0}")")"
 export LD_LIBRARY_PATH="\${HERE}/usr/bin/lib:\${LD_LIBRARY_PATH}"
+export XDG_DATA_DIRS="\${HERE}/usr/share:\${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
 exec "\${HERE}/usr/bin/${EXECUTABLE_NAME}" "\$@"
 EOF
 chmod +x "$APPDIR/AppRun"
