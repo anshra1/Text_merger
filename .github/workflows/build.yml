@@ -28,11 +28,20 @@ jobs:
       - name: Build Windows
         run: flutter build windows
 
+      - name: Create MSIX Package
+        run: dart run msix:create
+
       - name: Create Installer
         run: iscc windows\installer.iss
 
-      - name: Upload artifact
+      - name: Upload Installer artifact
         uses: actions/upload-artifact@v4
         with:
           name: TextMerger_Installer
           path: build\windows\installer\TextMerger_Installer.exe
+
+      - name: Upload MSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TextMerger_MSIX
+          path: build\windows\x64\runner\Release\*.msix
