@@ -1,38 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="context_for_ai">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>context_for_ai</title>
-  <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Text Merger - A powerful utility to combine text files and codebases for AI context.">
+    <title>Text Merger | Context for AI, Simplified</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10 9H9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Text Merger</span>
+            </div>
+            <a href="https://github.com/anshra1/Text_merger" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-container">
+                <div class="hero-badge">v1.0.0 is Live</div>
+                <h1 class="hero-title">Prepare AI Context <br><span class="text-gradient">in Seconds</span></h1>
+                <p class="hero-subtitle">
+                    A powerful, open-source utility designed to easily combine multiple code files or entire directories into a single, clean text document perfectly formatted for Large Language Models.
+                </p>
+                <div class="hero-cta">
+                    <a href="https://firebasestorage.googleapis.com/v0/b/doctor-ca9ae.firebasestorage.app/o/app%2FTextMerger_Installer.exe?alt=media&token=c9d231dd-ce96-40bd-83e5-70aa36e1a492" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Download for Windows
+                    </a>
+                    <a href="https://firebasestorage.googleapis.com/v0/b/doctor-ca9ae.firebasestorage.app/o/app%2Ftext-merger.AppImage?alt=media&token=ab27db15-19ff-4866-bdae-dde24de2fc1f" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                        Download for Linux
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <!-- Feature 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">📁</div>
+                        <h3 class="feature-title">File & Folder Explorer</h3>
+                        <p class="feature-desc">Easily browse and select individual files or entire directories to include in your context bundle.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">🖱️</div>
+                        <h3 class="feature-title">Drag & Drop</h3>
+                        <p class="feature-desc">Intuitively drag and drop files and folders directly from your file manager into the workspace.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3 class="feature-title">Customizable Settings</h3>
+                        <p class="feature-desc">Configure ignore rules and filter specific file extensions to keep your AI context clean and relevant.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">AI Context Ready</h3>
+                        <p class="feature-desc">Instantly outputs a unified document formatted specifically for optimal parsing by Large Language Models.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-container">
+            <p>&copy; 2026 Text Merger. Open Source.</p>
+            <p>Built with Flutter and Dart.</p>
+        </div>
+    </footer>
 </body>
 </html>
