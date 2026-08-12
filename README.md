@@ -2,6 +2,15 @@
 
 Text Merger is a powerful utility designed to easily combine multiple text or code files into a single document. This is especially useful for compiling codebases or documentation to provide as context for AI models.
 
+## ✨ Features
+
+- **File & Folder Explorer:** Browse and pick individual text files or entire directories.
+- **Drag & Drop Support:** Intuitively drag and drop files and folders directly into your workspace.
+- **Workspace Management:** Manage your selected files and organize your structure before merging.
+- **Customizable Settings:** Configure ignore rules, filter specific file extensions, and tailor the output to your needs.
+- **Cross-Platform:** Available as a fast, standalone application on both Windows and Linux.
+- **AI Context Ready:** Outputs a clean, unified text file perfectly formatted to feed into LLMs (Large Language Models) as context.
+
 ## 🚀 Download & Install
 
 You can download the latest version of Text Merger for your operating system below:
